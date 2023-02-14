@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client-side</title>
+</head>
+<body>
+    <form method="post" action="/upSolution" enctype="multipart/form-data">
+        <label for="solution">Upload your solution here</label><br>
+        <input type="file" id="solution" name="solution"><br>
+        <input type="submit" value="submit"><br>
+        <!-- <button id="get" type="button" hidden>GET</button><br>      -->
+    </form>
+        <!-- <div id="getMessage" style="border: 1px solid black;" hidden></div> -->
+    <script>
+        let form = document.querySelector('form');
+        form.addEventListener('submit', (event) =>{
+            //prevent refresh
+            event.preventDefault();
+            //get form action url
+            let url = event.target.action;
+            //turn  HTML form to FormData object
+            let data = new FormData(event.target);
+            //send form data to backend
+            fetch(url, 
+            {
+                method: 'POST',
+                body: data,
+            })
+            .then(res => res.json())
+            .then(data => console.log(data));
+        });
+        //phan nay chua dung den khong can doc
+        let getBtn=document.getElementById('get');
+        getBtn.addEventListener('click', getInfo);
+        
+        async function getInfo(event) {
+            event.preventDefault();
+            let url = "http://localhost:80/";
+            let res = await fetch(url + 'info', {method: 'GET'});
+            let data = await res.json();
+            document.getElementById('getMessage').textContent=data.problem;   
+        }
+    </script>
+</body>
+</html>
