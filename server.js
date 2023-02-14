@@ -7,13 +7,14 @@ const port = 80; //port number on localhost
 app.use(express.static('client')); // client is the folder for front-end
 
 //API middleware
+let count = 0;
 let storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, __dirname+'/solution');
     },
     filename: (req, file, cb) => {
         console.log(file);
-        cb(null, "solution_"+Date.now());
+        cb(null, "solution_"+(++count));
     }    
 });
 let upload = multer({storage: storage});
